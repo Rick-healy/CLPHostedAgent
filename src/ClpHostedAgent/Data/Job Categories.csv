@@ -1,0 +1,10 @@
+JobCategoryId,JobCategoryName
+-1,Unkown
+0,Total
+1,RN
+2,LPN
+3,Licensed Tech
+4,Management
+5,Other Support
+6,Clinical
+7,Clerical

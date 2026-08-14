@@ -1,0 +1,25 @@
+# ============================================================================
+# LOCAL DEV image only — NOT for deployment.
+# Adds the Azure CLI on top of the app so DefaultAzureCredential can reuse a
+# mounted `az login` (AzureCliCredential) instead of a managed identity.
+# In Azure the production Dockerfile is used and auth comes from managed identity.
+# ============================================================================
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
+WORKDIR /src
+COPY . .
+RUN dotnet restore
+RUN dotnet publish -c Release -o /app
+
+# Debian-based runtime so the Azure CLI installs cleanly (unlike alpine).
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl ca-certificates \
+    && curl -sL https://aka.ms/InstallAzureCLIDeb | bash \
+    && apt-get purge -y curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY --from=build /app .
+EXPOSE 8088
+ENTRYPOINT ["dotnet", "ClpHostedAgent.dll"]
