@@ -1,0 +1,41 @@
+@baseUrl = http://localhost:8088
+
+### Explain productivity percent
+POST {{baseUrl}}/responses
+Content-Type: application/json
+Accept: application/json
+
+{
+  "input": "What is productivity percent and how is it calculated?",
+  "stream": false
+}
+
+### Show the available data range
+POST {{baseUrl}}/responses
+Content-Type: application/json
+Accept: application/json
+
+{
+  "input": "What date range is available?",
+  "stream": false
+}
+
+### Query a department and date range
+POST {{baseUrl}}/responses
+Content-Type: application/json
+Accept: application/json
+
+{
+  "input": "Show productivity for Emergency Services in January 2026.",
+  "stream": false
+}
+
+### Compare departments
+POST {{baseUrl}}/responses
+Content-Type: application/json
+Accept: application/json
+
+{
+  "input": "Compare Emergency Services productivity with Critical Care. Give a concise answer.",
+  "stream": false
+}
